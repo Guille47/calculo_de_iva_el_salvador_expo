@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "calculo_de_iva_el_salvador",
-    "slug": "calculo_de_iva_el_salvador",
+    "slug": "calculo-de-iva-el-salvador",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -25,6 +25,18 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "d6f9da9c-cca2-4e23-932c-5d4aff396033"
+      }
+    },
+    "owner": "guillermo.jimenez",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/d6f9da9c-cca2-4e23-932c-5d4aff396033"
     }
   }
 }
