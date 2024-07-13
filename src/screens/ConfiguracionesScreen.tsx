@@ -55,7 +55,6 @@ export function ConfiguracionesScreen(): React.JSX.Element {
     if (value) {
       if (Number(value) >= 0.0) {
         setIsValueValid(true);
-        result = true;
       } else {
         setIsValueValid(false);
         setIsValidErrorText('El valor del campo debe ser mayor a 0.00');
@@ -75,21 +74,22 @@ export function ConfiguracionesScreen(): React.JSX.Element {
       <View style={styles.bottomHalf} />
       <View style={styles.floatView}>
         <View style={styles.viewInsideFloatView}>
-          <Text style={styles.labelsText}>Valor o valores:</Text>
+          <Text style={styles.labelsText}>Valor porcentual del IVA:</Text>
 
           <TextInputComponent
             actionOnTextChange={(text: string) => {
               actionOnTextChange(text);
             }}
             valueForInput={settingIVAValue}
-            placeHolder={'0.00'}
+            placeHolder={"0.00"}
           />
 
           {!isValueValid && <ErrorLabelComponent value={isValidErrorText} />}
 
           <TouchableOpacity
             style={styles.button}
-            onPress={() => saveToLocalStorage()}>
+            onPress={() => saveToLocalStorage()}
+          >
             <Text style={styles.textInsideButton}>Guardar</Text>
           </TouchableOpacity>
         </View>

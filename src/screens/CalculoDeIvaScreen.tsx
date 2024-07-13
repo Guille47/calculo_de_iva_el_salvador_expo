@@ -3,13 +3,11 @@ import {
   StyleSheet,
   Text,
   View,
-  TextInput,
-  TouchableOpacity,
   Alert,
   ScrollView,
   Dimensions,
   LayoutChangeEvent,
-} from 'react-native';
+} from "react-native";
 import {useReadFromLocalStorage} from '../hooks/UseLocalStorage';
 import useNumberToWords from '../hooks/UseNumberToWords';
 import {useFocusEffect} from '@react-navigation/native';
@@ -19,70 +17,70 @@ import {ReadOnlyTextInputComponent} from '../components/textInputs/ReadOnlyTextI
 import {ReadOnlyMultipleLinesTextInputComponent} from '../components/textInputs/ReadOnlyMultipleLinesTextInputComponent';
 import {ErrorLabelComponent} from '../components/labels/ErrorLabelComponent';
 
-interface valuesToCalculateI {
+interface ValuesToCalculateI {
   key: number;
   value: string;
   isValidErrorText: string;
-  isValueValid: Boolean;
+  isValueValid: boolean;
 }
 
 export function CalculoDeIvaScreen(): React.JSX.Element {
   const [valuesToCalculate, setValuesToCalculate] = useState<
-    valuesToCalculateI[]
-  >([{key: Date.now(), value: '', isValidErrorText: '', isValueValid: false}]);
+    ValuesToCalculateI[]
+  >([
+    { key: Date.now(), value: "", isValidErrorText: "", isValueValid: false },
+  ]);
 
   const [ivaConfigValue, setIvaConfigValue] = useState(0.0);
 
-  const {numberInWords, convertToWords} = useNumberToWords();
+  const { numberInWords, convertToWords } = useNumberToWords();
 
-  const [iva, setIva] = useState('0.00');
-  const [ivaWithValue, setIvaWithValue] = useState('0.00');
+  const [iva, setIva] = useState("0.00");
+  const [ivaWithValue, setIvaWithValue] = useState("0.00");
 
   const {
     storedValue,
     error: readError,
     fetchStorage,
-  } = useReadFromLocalStorage('ValorIVA');
+  } = useReadFromLocalStorage("ValorIVA");
 
   const [topHalfHeight, setTopHalfHeight] = useState(0);
   const [bottomHalfHeight, setBottomHalfHeight] = useState(0);
 
-  const [layout, setLayout] = useState({width: 0, height: 0, x: 0, y: 0});
+  const [layout, setLayout] = useState({ width: 0, height: 0, x: 0, y: 0 });
+
+  useEffect(() => {
+    if (storedValue) {
+      setIvaConfigValue(storedValue);
+    } else {
+      if (readError) {
+        Alert.alert("Error", readError);
+      }
+    }
+  }, [storedValue]);
 
   useFocusEffect(
     React.useCallback(() => {
       fetchStorage();
-      // Código a ejecutar cuando la pantalla se enfoca
-      if (storedValue) {
-        setIvaConfigValue(storedValue);
-      } else {
-        if (readError) {
-          Alert.alert('Error', readError);
-        }
-      }
-      return () => {
-        // Código a ejecutar cuando la pantalla se desenfoca
-      };
-    }, [storedValue, setIvaConfigValue, fetchStorage, readError]),
+      return () => {};
+    }, [])
   );
 
   const onLayout = (event: LayoutChangeEvent) => {
-    const {x, y, width, height} = event.nativeEvent.layout;
-    setLayout({x, y, width, height});
+    const { x, y, width, height } = event.nativeEvent.layout;
+    setLayout({ x, y, width, height });
   };
 
   const agregarCampo = () => {
     setValuesToCalculate([
       ...valuesToCalculate,
-      {key: Date.now(), value: '', isValidErrorText: '', isValueValid: false},
+      { key: Date.now(), value: "", isValidErrorText: "", isValueValid: false },
     ]);
   };
 
   const removerCampo = (key: number) => {
     setValuesToCalculate(
-      valuesToCalculate.filter(
-        (input: valuesToCalculateI) => input.key !== key,
-      ),
+      valuesToCalculate.filter((input: ValuesToCalculateI) => input.key !== key)
     );
   };
 
@@ -91,37 +89,37 @@ export function CalculoDeIvaScreen(): React.JSX.Element {
     if (bottomHalfHeight < increaseFactor) {
       setBottomHalfHeight(increaseFactor);
     } else {
-      const ventana = Dimensions.get('window');
+      const ventana = Dimensions.get("window");
       setBottomHalfHeight(ventana.height * 0.7);
     }
   }, [layout]);
 
   useEffect(() => {
-    const ventana = Dimensions.get('window');
+    const ventana = Dimensions.get("window");
     setTopHalfHeight(ventana.height * 0.3);
     setBottomHalfHeight(ventana.height * 0.7);
   }, []);
 
   const actionOnTextChange = (key: number, value: string) => {
-    const {result, errorText} = validateValue(value);
+    const { result, errorText } = validateValue(value);
     setValuesToCalculate(
-      valuesToCalculate.map((input: valuesToCalculateI) => {
+      valuesToCalculate.map((input: ValuesToCalculateI) => {
         return input.key === key
-          ? {key, value, isValidErrorText: errorText, isValueValid: result}
+          ? { key, value, isValidErrorText: errorText, isValueValid: result }
           : input;
-      }),
+      })
     );
   };
 
   const calcularValor = () => {
     const areValuesValid = valuesToCalculate.some(
-      (input: valuesToCalculateI) => input.isValueValid === false,
+      (input: ValuesToCalculateI) => input.isValueValid === false
     );
 
     if (!areValuesValid) {
       const sumOfValues = valuesToCalculate.reduce(
         (acc, curr) => acc + (Number(curr.value) || 0),
-        0,
+        0
       );
       const iva_ = Number(sumOfValues) * ivaConfigValue;
       const ivaWithValue_ = Number(sumOfValues) + iva_;
@@ -131,50 +129,48 @@ export function CalculoDeIvaScreen(): React.JSX.Element {
       convertToWords(ivaWithValue_.toFixed(2));
     } else {
       Alert.alert(
-        'Error: ',
-        'Es posible que haya un campo vacío, o con un valor erróneo, elimínelo y calcule de nuevo',
+        "Error: ",
+        "Es posible que haya un campo vacío, o con un valor erróneo, elimínelo y calcule de nuevo"
       );
     }
   };
 
   const validateValue = (value: string | undefined) => {
     let result = true;
-    let errorText = '';
+    let errorText = "";
     if (value) {
       if (Number(value)) {
-        const [numero, decimal] = Number(value).toFixed(2).split('.');
+        const [numero, decimal] = Number(value).toFixed(2).split(".");
         if (
-          Number(numero) >= 0.0 &&
-          Number(decimal) >= 0.0 &&
-          Number(decimal) < 100
+          Number(numero) < 0.0 ||
+          Number(decimal) < 0.0 ||
+          Number(decimal) >= 100
         ) {
-          result = true;
-        } else {
           errorText =
-            'El valor del campo debe ser superior a cero y los decimales entre cero y 99';
+            "El valor del campo debe ser superior a cero y los decimales entre cero y 99";
           result = false;
         }
       } else {
         errorText =
-          'El valor del campo debe ser superior a cero y los decimales entre cero y 99';
+          "El valor del campo debe ser superior a cero y los decimales entre cero y 99";
         result = false;
       }
     } else {
-      errorText = 'El campo no puede estar vacío';
+      errorText = "El campo no puede estar vacío";
       result = false;
     }
-    return {result, errorText};
+    return { result, errorText };
   };
   return (
-    <ScrollView style={styles.scrollView}>
-      <View style={[styles.topHalf, {height: topHalfHeight}]} />
-      <View style={[styles.bottomHalf, {height: bottomHalfHeight}]} />
+    <ScrollView>
+      <View style={[styles.topHalf, { height: topHalfHeight }]} />
+      <View style={[styles.bottomHalf, { height: bottomHalfHeight }]} />
       <View style={styles.floatView} onLayout={onLayout}>
         <View style={styles.viewInsideFloatView}>
           <Text style={styles.labelsText}>Valor o valores:</Text>
           <View>
             {valuesToCalculate.map(
-              (input: valuesToCalculateI, index: number) => {
+              (input: ValuesToCalculateI, index: number) => {
                 return (
                   <View key={input.key}>
                     <View style={styles.valuePlusButton}>
@@ -204,7 +200,7 @@ export function CalculoDeIvaScreen(): React.JSX.Element {
                     )}
                   </View>
                 );
-              },
+              }
             )}
           </View>
           <PrimaryButton
