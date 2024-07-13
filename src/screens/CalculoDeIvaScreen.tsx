@@ -226,42 +226,42 @@ export function CalculoDeIvaScreen(): React.JSX.Element {
 
 const styles = StyleSheet.create({
   topHalf: {
-    backgroundColor: '#B4CF7A',
+    backgroundColor: "#B4CF7A",
   },
   bottomHalf: {
-    backgroundColor: '#ffffff',
+    backgroundColor: "#ffffff",
   },
   floatView: {
-    position: 'absolute',
-    alignSelf: 'center',
-    top: '0%',
-    backgroundColor: '#ffffff',
-    width: '90%',
+    position: "absolute",
+    alignSelf: "center",
+    top: "0%",
+    backgroundColor: "#ffffff",
+    width: "90%",
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     zIndex: 4,
   },
   viewInsideFloatView: {
-    margin: '10%',
+    margin: "10%",
   },
   labelsText: {
     fontSize: 18,
-    fontWeight: 'bold',
-    color: '#000000',
+    fontWeight: "bold",
+    color: "#000000",
     margin: 4,
     marginTop: 10,
   },
   dottedLine: {
-    width: '90%',
+    width: "90%",
     height: 1,
-    backgroundColor: 'transparent',
-    borderBottomColor: 'black',
+    backgroundColor: "transparent",
+    borderBottomColor: "black",
     borderBottomWidth: 2,
-    borderStyle: 'dashed',
+    borderStyle: "dashed",
     margin: 15,
   },
   valuePlusButton: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
+    flexDirection: "row",
+    justifyContent: "space-around",
   },
 });
